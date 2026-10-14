@@ -5,14 +5,12 @@ const tweetSchema = new mongoose.Schema(
     content: {
       type: String,
       required: true,
+      max: [250, "Tweety can't be more than 250 characters"],
     },
-    userEmail: {
-      type: String,
-    },
-    comments: [
+    hashTags: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: "Hashtag",
       },
     ],
   },
@@ -20,5 +18,4 @@ const tweetSchema = new mongoose.Schema(
 );
 
 const Tweet = mongoose.model("Tweet", tweetSchema);
-
 module.exports = Tweet;
