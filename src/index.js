@@ -1,9 +1,24 @@
 const express = require("express");
 const connect = require("./config/database");
+const routes = require("./routes");
+
+const { PORT } = require("./config/serverConfig");
 const app = express();
 
-app.listen(3000, async () => {
-  console.log("Server Started");
-  await connect();
-  console.log("mongo db connected");
-});
+app.use(express.json());
+app.use("/api", routes);
+
+async function startServer() {
+  try {
+    await connect();
+    console.log("MongoDB connected");
+
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+startServer();
