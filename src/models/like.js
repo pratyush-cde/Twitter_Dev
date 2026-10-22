@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const likeSchema = new mongoose.Schema(
   {
     onModel: {
@@ -6,7 +7,7 @@ const likeSchema = new mongoose.Schema(
       required: true,
       enum: ["Tweet", "Comment"],
     },
-    likable: {
+    likeable: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       refPath: "onModel",
@@ -20,5 +21,6 @@ const likeSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Like = mongoose.Model("Like", likeSchema);
+const Like = mongoose.model("Like", likeSchema);
+
 module.exports = Like;
