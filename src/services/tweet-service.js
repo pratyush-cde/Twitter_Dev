@@ -52,6 +52,10 @@ class TweetService {
 
     return tweet;
   }
+
+  async getTweet(id) {
+    return await this.tweetRepository.getWithComments(id);
+  }
 }
 
 module.exports = TweetService;
