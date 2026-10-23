@@ -16,8 +16,8 @@ const toggleLike = async (req, res) => {
   } catch (error) {
     const isClientError =
       error.message === "Unknown model type" ||
-      error.message === "Comment likes are not implemented yet" ||
-      error.message === "Tweet not found";
+      error.message === "Tweet not found" ||
+      error.message === "Comment not found";
 
     return res.status(isClientError ? 400 : 500).json({
       success: false,

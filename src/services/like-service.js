@@ -1,9 +1,14 @@
-const { LikeRepository, TweetRepository } = require("../repository/index");
+const {
+  LikeRepository,
+  TweetRepository,
+  CommentRepository,
+} = require("../repository/index");
 
 class LikeService {
   constructor() {
     this.likeRepository = new LikeRepository();
     this.tweetRepository = new TweetRepository();
+    this.commentRepository = new CommentRepository();
   }
 
   async toggleLike(modelId, modelType, userId) {
@@ -11,14 +16,14 @@ class LikeService {
 
     if (modelType === "Tweet") {
       likeable = await this.tweetRepository.get(modelId);
-
-      if (!likeable) {
-        throw new Error("Tweet not found");
-      }
     } else if (modelType === "Comment") {
-      throw new Error("Comment likes are not implemented yet");
+      likeable = await this.commentRepository.get(modelId);
     } else {
       throw new Error("Unknown model type");
+    }
+
+    if (!likeable) {
+      throw new Error(`${modelType} not found`);
     }
 
     const existingLike = await this.likeRepository.findByUserAndLikeable({
