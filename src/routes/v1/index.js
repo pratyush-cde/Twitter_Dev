@@ -9,7 +9,7 @@ const { authenticate } = require("../../middlewares/jwt-middleware");
 
 const router = express.Router();
 
-router.post("/tweets", createTweet);
+router.post("/tweets", authenticate, createTweet);
 router.post("/users", signup);
 router.post("/users/login", login);
 router.get("/users/me", authenticate, getCurrentUser);
