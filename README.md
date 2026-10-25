@@ -22,4 +22,15 @@
 
 - Every tweet might be having a hashtag
 
+## JWT authentication
+
+Set `JWT_SECRET` to a long, random value in `.env`. `JWT_EXPIRES_IN` controls token
+lifetime and defaults to `1d`.
+
+Create an account with `POST /api/v1/users`, then log in with
+`POST /api/v1/users/login` using `{ "email": "...", "password": "..." }`.
+The login response contains a bearer token. Send it to authenticated endpoints
+as `Authorization: Bearer <token>`; the authenticated user is available as
+`req.user`. `GET /api/v1/users/me` returns that user.
+
 // https://how-to.dev/how-to-set-up-jest-for-es-module

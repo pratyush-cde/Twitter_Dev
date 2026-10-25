@@ -4,10 +4,12 @@ const routes = require("./routes");
 const { UserRepository, TweetRepository } = require("./repository/index");
 const { LikeService } = require("./services/index");
 const { PORT } = require("./config/serverConfig");
+const { initialize: initializePassport } = require("./middlewares/jwt-middleware");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(initializePassport);
 app.use("/api", routes);
 
 async function startServer() {
