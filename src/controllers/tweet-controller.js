@@ -1,27 +1,46 @@
 const { TweetService } = require("../services/index");
 
 const tweetService = new TweetService();
+const upload = require("../config/file-upload-S3-config");
+const singleUploader = upload.single("image");
+const createTweet = (req, res) => {
+  singleUploader(req, res, async (uploadError) => {
+    if (uploadError) {
+      console.error("Tweet image upload failed:", uploadError);
+      return res.status(500).json({
+        success: false,
+        message: "Image upload failed",
+        err: {
+          message: uploadError.message,
+          code: uploadError.code,
+          statusCode: uploadError.statusCode,
+        },
+        data: {},
+      });
+    }
 
-const createTweet = async (req, res) => {
-  try {
-    const response = await tweetService.create({
-      ...req.body,
-      userId: req.user.id,
-    });
-    return res.status(201).json({
-      success: true,
-      message: "Successfully created a tweet",
-      err: {},
-      data: response,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "something went wrong",
-      err: error,
-      data: {},
-    });
-  }
+    try {
+      const response = await tweetService.create({
+        ...req.body,
+        userId: req.user.id,
+        images: req.file ? [req.file.location] : [],
+      });
+      return res.status(201).json({
+        success: true,
+        message: "Successfully created a tweet",
+        err: {},
+        data: response,
+      });
+    } catch (error) {
+      console.error("Tweet creation failed:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        err: { message: error.message },
+        data: {},
+      });
+    }
+  });
 };
 
 const getTweet = async (req, res) => {

@@ -3,7 +3,11 @@ const express = require("express");
 const { createTweet, getTweet } = require("../../controllers/tweet-controller");
 const { toggleLike } = require("../../controllers/like-controller");
 const { createComment } = require("../../controllers/comment-controller");
-const { signup, login, getCurrentUser } = require("../../controllers/user-controller");
+const {
+  signup,
+  login,
+  getCurrentUser,
+} = require("../../controllers/user-controller");
 const validateToggleLike = require("../../middlewares/validate-toggle-like");
 const { authenticate } = require("../../middlewares/jwt-middleware");
 
