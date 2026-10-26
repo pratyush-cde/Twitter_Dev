@@ -2,9 +2,9 @@ const { TweetService } = require("../services/index");
 
 const tweetService = new TweetService();
 const upload = require("../config/file-upload-S3-config");
-const singleUploader = upload.single("image");
+const multipleUploader = upload.array("images");
 const createTweet = (req, res) => {
-  singleUploader(req, res, async (uploadError) => {
+  multipleUploader(req, res, async (uploadError) => {
     if (uploadError) {
       console.error("Tweet image upload failed:", uploadError);
       return res.status(500).json({
@@ -23,7 +23,7 @@ const createTweet = (req, res) => {
       const response = await tweetService.create({
         ...req.body,
         userId: req.user.id,
-        images: req.file ? [req.file.location] : [],
+        images: (req.files || []).map((file) => file.location),
       });
       return res.status(201).json({
         success: true,
