@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connect = async () => {
-  await mongoose.connect("mongodb://localhost/twitter_dev");
+  await mongoose.connect(process.env.MONGODB_URI);
 };
 
 module.exports = connect;
